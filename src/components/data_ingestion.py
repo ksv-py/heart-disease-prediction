@@ -3,9 +3,14 @@ import sys
 import pandas as pd
 from dataclasses import dataclass
 from sklearn.model_selection import train_test_split
+from pathlib import Path
 
+
+sys.path.append(str(Path(__file__).parent.parent))
+from components.model_trainer import ModelTrainer
 from exception import CustomException  # Custom exception handling class
 from logger import logging  # Logging setup
+from data_transformation import DataTransformation
 
 # Define a dataclass for configuring the data ingestion paths
 @dataclass
@@ -38,8 +43,11 @@ class DataIngestion:
         logging.info("Starting data ingestion process.")
         try:
             # Reading the raw dataset
-            df = pd.read_csv('notebook/data/heart_disease_health_indicators_BRFSS2015.csv')
+            
+            df = pd.read_csv('notebook/data/eda_heart_data.csv')
             logging.info("Successfully read the dataset.")
+
+            
 
             # Creating the directory for saving raw data if it doesn't exist
             os.makedirs(os.path.dirname(self.ingestion_config.raw_data_path), exist_ok=True)
@@ -59,6 +67,9 @@ class DataIngestion:
             test_set.to_csv(self.ingestion_config.test_data_path, index=False, header=True)
             logging.info(f"Testing data saved at: {self.ingestion_config.test_data_path}")
 
+            print(df.columns)
+            print(pd.read_csv(self.ingestion_config.train_data_path).columns)
+            print(pd.read_csv(self.ingestion_config.test_data_path).columns)
             # Returning paths of train and test datasets
             return (
                 self.ingestion_config.train_data_path,
@@ -74,3 +85,9 @@ if __name__ == "__main__":
     # Create an instance of DataIngestion and initiate data ingestion.
     obj = DataIngestion()
     train_data, test_data = obj.initiate_data_ingestion()
+    
+    data_transformation = DataTransformation()
+    train_arr,test_arr = data_transformation.initiate_data_transformation(train_data,test_data)
+
+    modeltrainer = ModelTrainer()
+    print(f"Model Accuracy: {modeltrainer.initiate_model_training(train_arr,test_arr)}")
