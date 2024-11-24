@@ -52,7 +52,7 @@ def evaluate_model(X_train, y_train, X_test, y_test, models, params):
             
             # Apply GridSearchCV for hyperparameter tuning
             logging.info(f"Performing GridSearchCV for {model_name}...")
-            gs = GridSearchCV(model_instance, model_params, cv=3, scoring='accuracy', n_jobs=6)
+            gs = GridSearchCV(model_instance, model_params, cv=3, scoring='accuracy', n_jobs=7)
             gs.fit(X_train, y_train)
 
             # Log the best parameters found by GridSearchCV

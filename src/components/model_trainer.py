@@ -36,11 +36,11 @@ class ModelTrainer:
             models = {
                 'LogisticRegression' : LogisticRegression(),
                 'DecisionTreeClassifier' : DecisionTreeClassifier(),
-                'RandomForestClassifier': RandomForestClassifier(),
+                # 'RandomForestClassifier': RandomForestClassifier(),
                 'AdaBoostClassifier': AdaBoostClassifier(),
                 'GradientBoostingClassifier' : GradientBoostingClassifier(),
                 'KNeighborsClassifier' : KNeighborsClassifier(),
-                'Support Vector Classifier' : SVC(),
+                # 'Support Vector Classifier' : SVC(),
                 'CatBoostClassifier' : CatBoostClassifier(task_type='GPU', devices='0'),
                 'XGBClassifier' : XGBClassifier(tree_method='gpu_hist',gpu_id= 0,  max_depth=6, max_bin=256)
             }
@@ -73,11 +73,11 @@ class ModelTrainer:
                     'splitter': ['random']      # Number of features to consider
                 },
                 "RandomForestClassifier": {
-                    'n_estimators': [100, 200],         # Number of trees
+                    'n_estimators': [100, 200, 500, 1000],         # Number of trees
                     'max_depth': [None, 10, 20, 30, 50],           # Maximum tree depth
                     'min_samples_split': [2, 5, 10],               # Minimum samples for a split
                     'min_samples_leaf': [1, 2, 4],                 # Minimum samples per leaf
-                    'max_features': ['sqrt', 'log2'],        # Features per split
+                    'max_features': ['sqrt', 'log2', None],        # Features per split
                     'bootstrap': [True, False],                    # Bootstrapping strategy
                 },
                 "GradientBoostingClassifier": {
